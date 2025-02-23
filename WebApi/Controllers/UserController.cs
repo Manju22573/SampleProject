@@ -36,7 +36,7 @@ namespace WebApi.Controllers
         [HttpPost]
         public HttpResponseMessage UpdateUser(Guid userId, [FromBody] UserModel model)
         {
-            var user = _getUserService.GetUser(userId);
+           var user = _getUserService.GetUser(userId);
             if (user == null)
             {
                 return DoesNotExist();
@@ -89,7 +89,8 @@ namespace WebApi.Controllers
         [HttpGet]
         public HttpResponseMessage GetUsersByTag(string tag)
         {
-            throw new NotImplementedException();
+            var users = _getUserService.GetUsersByTag(tag);
+            return Found(users);
         }
     }
 }

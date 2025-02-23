@@ -59,13 +59,17 @@ namespace BusinessEntities
             _name = name;
         }
 
+        /// <summary>
+        /// If Email is not madatory we are allowing null values to store
+        /// </summary>
+        /// <param name="email"></param>
         public void SetEmail(string email)
         {
-            if (string.IsNullOrEmpty(email))
-            {
-                throw new ArgumentNullException("Name was not provided.");
-            }
-            _email = email;
+            //if (string.IsNullOrEmpty(email))
+            //{
+            //    throw new ArgumentNullException("Email was not provided.");
+            //}
+            _email = email;  
         }
 
         public void SetType(UserTypes type)
