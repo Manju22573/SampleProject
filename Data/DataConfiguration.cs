@@ -86,7 +86,7 @@ namespace Data
             var documentStore = new DocumentStore
             {
                 Urls = new[] { " https://a.devmanju.ravendb.community/" },
-                Database = "Sample",
+                Database = "SampleProject",
                 Certificate = certificate,
                 Conventions = new DocumentConventions
                 {
