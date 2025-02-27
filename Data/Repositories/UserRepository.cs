@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BusinessEntities;
 using Common;
@@ -58,5 +59,16 @@ namespace Data.Repositories
         {
             base.DeleteAll<UsersListIndex>();
         }
+
+
+        public IEnumerable<User> GetUsersByTag(string tag)
+        {
+            
+            return _documentSession.Query<User>()
+                                   .Where(u => u.Tags.Contains(tag, StringComparer.OrdinalIgnoreCase))
+                                   .ToList();
+        }
+
+
     }
 }

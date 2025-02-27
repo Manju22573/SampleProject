@@ -17,6 +17,6 @@ namespace WebApi.Models.Users
         public string Email { get; set; }
         public EnumData Type { get; set; }
         public decimal? MonthlySalary { get; set; }
-        public int Age { get; set; }
+        public int? Age { get; set; }
     }
 }

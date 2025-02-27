@@ -13,7 +13,7 @@ namespace BusinessEntities
         //    get => _id;
         //    private set => _id = value;
         //}
-        public string Id { get; protected set; }
+        public string Id { get;  set; }
         public bool EqualsById(IdObject other)
         {
             return other != null && Id.Equals(other.Id);

@@ -7,7 +7,7 @@ namespace BusinessEntities
     public class User : IdObject
     {
         private readonly List<string> _tags = new List<string>();
-        private int _age;
+        private int? _age;
         private string _email;
         private decimal? _monthlySalary;
         private string _name;
@@ -38,7 +38,7 @@ namespace BusinessEntities
             private set => _monthlySalary = value;
         }
 
-        public int Age
+        public int? Age
         {
             get => _age;
             private set => _age = value;
@@ -59,13 +59,17 @@ namespace BusinessEntities
             _name = name;
         }
 
+        /// <summary>
+        /// If Email is not madatory we are allowing null values to store
+        /// </summary>
+        /// <param name="email"></param>
         public void SetEmail(string email)
         {
-            if (string.IsNullOrEmpty(email))
-            {
-                throw new ArgumentNullException("Name was not provided.");
-            }
-            _email = email;
+            //if (string.IsNullOrEmpty(email))
+            //{
+            //    throw new ArgumentNullException("Email was not provided.");
+            //}
+            _email = email;  
         }
 
         public void SetType(UserTypes type)
@@ -73,9 +77,9 @@ namespace BusinessEntities
             _type = type;
         }
 
-        public void SetAge(int age)
+        public void SetAge(int? age)
         {
-            _email = _name;
+            _age = age;
         }
 
         public void SetMonthlySalary(decimal? monthlySalary)
