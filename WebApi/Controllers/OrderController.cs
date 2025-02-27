@@ -89,6 +89,8 @@ namespace WebApi.Controllers
                 totalPrice = order.TotalPrice,
                 orderDate = order.OrderDate,
                 isProcessed = order.IsProcessed,
+                productId = order.ProductId,
+                userId = order.UserId
             };
 
             return Found(result);
