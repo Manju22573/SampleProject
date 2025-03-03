@@ -8,7 +8,7 @@ namespace WebApi.Controllers
     {
         Order GetOrder(Guid id);
 
-        IEnumerable<Order> GetOrders(string productId = null, string userId=null, int? quantity = null, DateTime? orderDate = null, bool? isProcessed = null);
+        IEnumerable<Order> GetOrders(string userId=null, int? quantity = null, DateTime? orderDate = null, bool? isProcessed = null, List<string> productList = null);
 
        
     }

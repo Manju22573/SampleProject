@@ -7,7 +7,7 @@ namespace Data.Repositories
 {
     public interface IOrderRepository : IRepository<Order>
     {
-        IEnumerable<Order> Get(string productId = null, string userId =null, int? quantity = null, DateTime? orderDate = null, bool? isProcessed = null  );
+        IEnumerable<Order> Get(string userId = null, int? quantity = null, DateTime? orderDate = null, bool? isProcessed = null, List<string> productList =null);
          void DeleteAll();
         
 

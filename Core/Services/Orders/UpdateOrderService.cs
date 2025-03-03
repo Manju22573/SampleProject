@@ -9,9 +9,9 @@ namespace Core.Services.Orders
     [AutoRegister(AutoRegisterTypes.Singleton)]
     public class UpdateOrderService :IUpdateOrderService
     {        
-        public void Update(Order order,  bool IsProcessed, DateTime? orderDate, int Quantity , string productId , string UserId , decimal? totalprice)
+        public void Update(Order order,  bool IsProcessed, DateTime? orderDate, int Quantity , IEnumerable<string> productIds, string UserId , decimal? totalprice)
         {
-            order.SetProductId(productId);
+            order.SetProductIds(productIds);
             order.SetIsProcessed(IsProcessed);
             order.SetOrderDate(orderDate);
             order.SetQuantity(Quantity);
