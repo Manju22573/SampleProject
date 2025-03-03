@@ -24,9 +24,9 @@ namespace Core.Services.Orders
         }
          
 
-        public IEnumerable<Order> GetOrders(string productId = null, string userId = null,int? quantity = null, DateTime? orderDate = null, bool? isProcessed = null)
+        public IEnumerable<Order> GetOrders( string userId = null,int? quantity = null, DateTime? orderDate = null, bool? isProcessed = null, List<string> productList = null)
         {
-            return _OrderRepository.Get(productId,userId,quantity, orderDate, isProcessed);
+            return _OrderRepository.Get(userId,quantity, orderDate, isProcessed, productList);
         }
     }
 }

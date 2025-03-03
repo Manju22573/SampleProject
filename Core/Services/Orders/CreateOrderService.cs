@@ -25,10 +25,10 @@ namespace Core.Services.Orders
             _updateOrderService = updateOrderService;
         }
 
-        public Order Create(Guid id,  bool IsProcessed, DateTime? orderDate, int Quantity, string productId, string UserId, decimal? totalPrice)
+        public Order Create(Guid id,  bool IsProcessed, DateTime? orderDate, int Quantity, IEnumerable<string> productIds, string UserId, decimal? totalPrice)
         {
             var order = _orderFactory.Create(id.ToString());
-            _updateOrderService.Update(order,IsProcessed,orderDate,Quantity,productId ,UserId,totalPrice);
+            _updateOrderService.Update(order,IsProcessed,orderDate,Quantity, productIds, UserId,totalPrice);
             _orderRepository.Save(order);
             return order;
         }

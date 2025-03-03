@@ -14,7 +14,8 @@ namespace Data.Indexes
             Map = orders => from order in orders
                             select new
                             {
-                                order.ProductId,
+                                order.Id,
+                                order.Products,
                                 order.Quantity,
                                 order.IsProcessed,
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -42,7 +43,7 @@ namespace WebApi.Controllers
             {
                 return Found("Order Already exists");
             }
-            order = _createOrderService.Create(orderId, model.IsProcessed, model.OrderDate, model.Quantity, model.ProductId , model.UserId, model.TotalPrice);
+            order = _createOrderService.Create(orderId, model.IsProcessed, model.OrderDate, model.Quantity, model.ProductIds , model.UserId, model.TotalPrice);
             return Found(new OrderData(order));
         }
 
@@ -54,7 +55,7 @@ namespace WebApi.Controllers
             if (order == null){
                 return DoesNotExist();
             }
-            _updateOrderService.Update(order, model.IsProcessed, model.OrderDate, model.Quantity, model.ProductId, model.UserId,model.TotalPrice);
+            _updateOrderService.Update(order, model.IsProcessed, model.OrderDate, model.Quantity, model.ProductIds, model.UserId,model.TotalPrice);
             var result = new  { orderId = order.Id,quantity = order.Quantity,totalPrice = order.TotalPrice,orderDate = order.OrderDate, isProcessed = order.IsProcessed };
             return Found(result);
         }
@@ -81,27 +82,19 @@ namespace WebApi.Controllers
             {
                 return DoesNotExist();
             }
-
-            var result = new
-            {
-                OrderId = order.Id,
-                quantity = order.Quantity,
-                totalPrice = order.TotalPrice,
-                orderDate = order.OrderDate,
-                isProcessed = order.IsProcessed,
-                productId = order.ProductId,
-                userId = order.UserId
-            };
-
-            return Found(result);
-           
+            _getOrderService.GetOrder(orderId);
+            return Found(new OrderData(order));
         }
+
+    
 
         [Route("list")]
         [HttpGet]
-        public HttpResponseMessage GetOrders(int skip, int take, string productId = null, int? quantity = null, DateTime? orderDate = null, bool? isProcessed = null , string userId = null)
+        public HttpResponseMessage GetOrders(int skip, int take, string userId = null, int? quantity = null, DateTime? orderDate = null, bool? isProcessed = null , string productlist = null)
         {
-            var orders = _getOrderService.GetOrders(productId, userId, quantity, orderDate, isProcessed)
+
+            List<string> productListArray = productlist?.Split(',').ToList() ?? new List<string>();
+            var orders = _getOrderService.GetOrders( userId, quantity, orderDate, isProcessed , productListArray)
                                          .Skip(skip).Take(take)
                                          .Select(q => new OrderData(q))                                        
                                          .ToList();

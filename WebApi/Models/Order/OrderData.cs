@@ -12,7 +12,7 @@ namespace WebApi.Models.Order
         public OrderData(BusinessEntities.Order order) : base(order)
         {
             Id = order.Id;
-            ProductId = order.ProductId;
+            ProductId = order.Products;
             Quantity = order.Quantity;
             TotalPrice = order.TotalPrice;
             OrderDate = order.OrderDate;
@@ -24,7 +24,7 @@ namespace WebApi.Models.Order
         }
         
         public string UserId { get; private set; }
-        public string ProductId { get; private set; }
+        public IEnumerable<string> ProductId { get; private set; }
         public int Quantity { get; private set; }
         public decimal? TotalPrice { get; private set; }
         public DateTime? OrderDate { get; private set; }

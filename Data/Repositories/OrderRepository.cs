@@ -19,116 +19,50 @@ namespace Data.Repositories
         {
             _documentSession = documentSession;
         }
-
-        //public IEnumerable<Order> Get(string productId = null, int? quantity = null, DateTime? orderDate = null, bool? isProcessed = null)
-        //{
-        //    var query = _documentSession.Advanced.DocumentQuery<Order,OrderListindex>();
-
-        //    bool hasFirstParameter = false;
-
-        //    if (!string.IsNullOrEmpty(productId))
-        //    {
-        //        query = query.Search(x => x.ProductId, $"*{productId}*");
-        //        hasFirstParameter = true;
-        //    }
-
-        //    if (quantity.HasValue)
-        //    {
-        //        if (hasFirstParameter) query = query.AndAlso();
-        //        query = query.WhereEquals(x => x.Quantity, quantity.Value);
-        //        hasFirstParameter = true;
-        //    }
-
-        //    if (orderDate.HasValue)
-        //    {
-        //        if (hasFirstParameter) query = query.AndAlso();
-        //        query = query.WhereEquals(x => x.OrderDate, orderDate.Value);
-        //        hasFirstParameter = true;
-        //    }
-
-        //    if (isProcessed.HasValue)
-        //    {
-        //        if (hasFirstParameter) query = query.AndAlso();
-        //        query = query.WhereEquals(x => x.IsProcessed, isProcessed.Value);
-        //    }
-
-        //    return query.ToList();
-        //}
-
-
-
-        public IEnumerable<Order> Get(string productId = null, string userId = null, int? quantity = null, DateTime? orderDate = null, bool? isProcessed = null)
+     
+        public IEnumerable<Order> Get( string userId = null,
+                                                int? quantity = null,
+                                                DateTime? orderDate = null,
+                                                bool? isProcessed = null,
+                                                List<string> productList = null
+                                                )
         {
             var query = _documentSession.Advanced.DocumentQuery<Order, OrderListindex>();
 
-            bool hasFirstParameter = false;
+            var hasFirstParameter = false;
 
-            if (!string.IsNullOrEmpty(productId))
+            if (!string.IsNullOrEmpty(userId))
             {
-                query = query.Search(x => x.ProductId, $"*{productId}*");
-                hasFirstParameter = true;
-            }
-
-            if (quantity.HasValue)
-            {
-                if (hasFirstParameter) query = query.AndAlso();
-                query = query.WhereEquals(x => x.Quantity, quantity.Value);
-                hasFirstParameter = true;
-            }
-
-            if (orderDate.HasValue)
-            {
-                if (hasFirstParameter) query = query.AndAlso();
-                query = query.WhereEquals(x => x.OrderDate, orderDate.Value);
+                query = query.WhereEquals("UserId", userId);
                 hasFirstParameter = true;
             }
 
             if (isProcessed.HasValue)
             {
                 if (hasFirstParameter) query = query.AndAlso();
-                query = query.WhereEquals(x => x.IsProcessed, isProcessed.Value);
+                query = query.WhereEquals("IsProcessed", isProcessed.Value);
                 hasFirstParameter = true;
             }
 
-            if (!string.IsNullOrEmpty(userId))
+            if (orderDate.HasValue)
             {
                 if (hasFirstParameter) query = query.AndAlso();
-                query = query.WhereEquals(x => x.UserId, userId);
+                query = query.WhereGreaterThanOrEqual("OrderDate", orderDate.Value);
+                hasFirstParameter = true;
             }
 
-           
-            var orders = query
-                .Include(x => x.ProductId)
-                .Include(x => x.UserId)
-                .ToList();
-
-         
-            var productIds = orders.Select(o => o.ProductId).Distinct();
-            var userIds = orders.Select(o => o.UserId).Distinct();
-
-            var products = _documentSession.Load<Product>(productIds);
-            var users = _documentSession.Load<User>(userIds);
-
-             var orderDetails = orders.Select(order => new Order
+            if (productList != null && productList.Any())
             {
-                Id = order.Id,
-                //UserName = !string.IsNullOrEmpty(order.UserId) && users.TryGetValue(order.UserId, out var user) ? user?.Name
-                //// : "N/A",
-                ////ProductName = !string.IsNullOrEmpty(order.ProductId) && products.TryGetValue(order.ProductId, out var product)
-                //// ? product?.ProductName
-                ////  : "N/A",
-                ProductId = order.ProductId,
-                UserId = order.UserId,
-                Quantity = order.Quantity,
-                TotalPrice = order.TotalPrice,
-                OrderDate = order.OrderDate,
-                IsProcessed = order.IsProcessed,
-            
-              
-            }).ToList();
+                if (hasFirstParameter) query = query.AndAlso();
+                query = query.WhereIn("Products", productList);
+            }
 
-            return orderDetails;
+            return query.ToList();
         }
+
+    
+
+
 
 
         public void DeleteAll()

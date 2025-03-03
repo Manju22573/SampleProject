@@ -1,22 +1,19 @@
-﻿using System;
+﻿using Common.Extensions;
+using System;
+using System.Collections.Generic;
 
 namespace BusinessEntities
 {
     public class Order : IdObject
     {
-        private string _productId;
+       
         private string _userId;
         private int _quantity;
         private decimal? _totalPrice;
         private DateTime? _orderDate;
         private bool _isProcessed;
-  
-
-        public string ProductId
-        {
-            get => _productId;
-             set => _productId = value;
-        }
+        private readonly List<string> _productids = new List<string>();
+     
 
         public string UserId
         {
@@ -49,10 +46,15 @@ namespace BusinessEntities
         }
 
     
-
-        public void SetProductId(string productId)
+        public IEnumerable<string> Products
         {
-            ProductId = productId;
+            get => _productids;
+            private set => _productids.Initialize(value);
+        }
+
+        public void SetProductIds(IEnumerable<string> productIds)
+        {
+            _productids.Initialize(productIds);
         }
 
         public void SetUserId(string userId)
